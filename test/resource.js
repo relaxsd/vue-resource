@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 describe('this.$resource', function () {
 
-    it('get({file: "valid.json"})', (done) => {
+    it('get({params:{file: "valid.json"}})', (done) => {
 
         var vm = new Vue({
 
@@ -10,7 +10,7 @@ describe('this.$resource', function () {
 
                 var resource = this.$resource('data{/file}');
 
-                resource.get({file: 'valid.json'}).then((res) => {
+                resource.get({params:{file: 'valid.json'}}).then((res) => {
 
                     expect(res.ok).toBe(true);
                     expect(res.status).toBe(200);
@@ -25,7 +25,7 @@ describe('this.$resource', function () {
 
     });
 
-    it('save({file: "valid.json"}, {foo: "bar"})', (done) => {
+    it('get({params:{file: "valid.json"}}) with before() option', (done) => {
 
         var vm = new Vue({
 
@@ -33,7 +33,32 @@ describe('this.$resource', function () {
 
                 var resource = this.$resource('data{/file}');
 
-                resource.save({file: 'valid.json'}, {foo: 'bar'}).then((res) => {
+                resource.get({
+
+                    params:{file: 'valid.json'},
+
+                    before: (req) => {
+                        expect(typeof req).toBe('object');
+                        done();
+                    }
+
+                });
+
+            }
+
+        });
+
+    });
+
+    it('save({foo: "bar"}, {params:{file: "valid.json"}})', (done) => {
+
+        var vm = new Vue({
+
+            created() {
+
+                var resource = this.$resource('data{/file}');
+
+                resource.save({foo: 'bar'}, {params:{file: 'valid.json'}}).then((res) => {
 
                     expect(res.ok).toBe(true);
                     expect(res.status).toBe(200);
