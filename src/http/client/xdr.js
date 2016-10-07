@@ -20,7 +20,10 @@ export default function (request) {
             resolve(request.respondWith(xdr.responseText, {status}));
         };
 
-        request.abort = () => xdr.abort();
+        request.abort = () => {
+            xdr.abort();
+            if (request.abortCb) request.abortCb(request);
+        };
 
         xdr.open(request.method, request.getUrl());
         xdr.timeout = 0;

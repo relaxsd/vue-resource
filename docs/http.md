@@ -50,6 +50,7 @@ headers | `Object` | Headers object to be sent as HTTP request headers
 params | `Object` | Parameters object to be sent as URL parameters
 method | `string` | HTTP method (e.g. GET, POST, ...)
 timeout | `number` | Request timeout in milliseconds (`0` means no timeout)
+abortCb | `function(request)` | Callback function to be called when the request is aborted
 before | `function(request)` | Callback function to modify the request options before it is sent
 progress | `function(event)` | Callback function to handle the [ProgressEvent](https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent) of uploads
 credentials | `boolean` | Indicates whether or not cross-site Access-Control requests should be made using credentials

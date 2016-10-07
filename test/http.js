@@ -132,9 +132,12 @@ describe('this.$http', function () {
 
                             req.abort();
 
-                            done();
-
                         }, 0);
+                    },
+
+                    abortCb(req) {
+                        expect(typeof req).toBe('object');
+                        done();
                     }
 
                 }).then((res) => {
