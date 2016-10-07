@@ -48,8 +48,16 @@ Abort a previous request when a new request is about to be sent. For example whe
 
   }).then((response) => {
     // success callback
+
+    // clean up to prevent abort() on the next request
+    delete this.previousRequest;
+
   }, (response) => {
     // error callback
+
+    // clean up to prevent abort() on the next request
+    delete this.previousRequest;
+
   });
 }
 ```
