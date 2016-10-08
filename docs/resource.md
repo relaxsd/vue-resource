@@ -13,6 +13,7 @@ get: {method: 'GET'},         // get([options])
 save: {method: 'POST'},       // save([body], [options])
 query: {method: 'GET'},       // query([options])
 update: {method: 'PUT'},      // update([body], [options])
+patch: {method: 'PATCH'},     // patch([body], [options])
 remove: {method: 'DELETE'},   // remove([options])
 delete: {method: 'DELETE'}    // delete([options])
 ```
