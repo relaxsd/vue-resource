@@ -27,8 +27,8 @@ export default function (context, request) {
 
         request.abort = () => {
             xhr.abort();
-            if (isFunction(request.abortCb)) {
-                request.abortCb.call(context,request);
+            if (isFunction(request.onAbort)) {
+                request.onAbort.call(context,request);
             }
         };
 

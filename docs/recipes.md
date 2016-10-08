@@ -46,20 +46,20 @@ Abort a previous request when a new request is about to be sent. For example whe
       this.previousRequest = request;
     }
 
-    abortCb(request) {
+    onAbort(request) {
       // request abort callback
     }
 
   }).then((response) => {
     // success callback
 
-    // clean up to prevent abort() (and the abortCb() callback) on the next request
+    // clean up to prevent abort() (and the onAbort() callback) on the next request
     delete this.previousRequest;
 
   }, (response) => {
     // error callback
 
-    // clean up to prevent abort() (and the abortCb() callback) on the next request
+    // clean up to prevent abort() (and the onAbort() callback) on the next request
     delete this.previousRequest;
 
   });
