@@ -4,7 +4,7 @@
 
 import Promise from '../../promise';
 
-export default function (request) {
+export default function (context, request) {
     return new Promise((resolve) => {
 
         var name = request.jsonp || 'callback', callback = '_jsonp' + Math.random().toString(36).substr(2), body = null, handler, script;
@@ -23,6 +23,10 @@ export default function (request) {
 
             delete window[callback];
             document.body.removeChild(script);
+        };
+
+        request.abort = () => {
+            throw "abort() is not available on jsonp requests";
         };
 
         request.params[name] = callback;
