@@ -24,7 +24,10 @@ export default function (request) {
             resolve(response);
         };
 
-        request.abort = () => xhr.abort();
+        request.abort = () => {
+            xhr.abort();
+            if (request.abortCb) request.abortCb(request);
+        };
 
         if (request.progress) {
             if (request.method === 'GET') {
