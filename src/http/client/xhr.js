@@ -3,9 +3,10 @@
  */
 
 import Promise from '../../promise';
-import { each, trim } from '../../util';
+import { each, trim, isFunction } from '../../util';
 
-export default function (request) {
+export default function (context, request) {
+
     return new Promise((resolve) => {
 
         var xhr = new XMLHttpRequest(), handler = (event) => {
@@ -26,7 +27,9 @@ export default function (request) {
 
         request.abort = () => {
             xhr.abort();
-            if (request.abortCb) request.abortCb(request);
+            if (isFunction(request.onAbort)) {
+                request.onAbort.call(context,request);
+            }
         };
 
         if (request.progress) {

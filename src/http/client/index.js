@@ -67,5 +67,5 @@ function sendRequest(request, resolve) {
 
     var client = request.client || xhrClient;
 
-    resolve(client(request));
+    resolve(client(this, request));
 }

@@ -135,8 +135,9 @@ describe('this.$http', function () {
                         }, 0);
                     },
 
-                    abortCb(req) {
+                    onAbort(req) {
                         expect(typeof req).toBe('object');
+                        expect(this).toBe(vm);
                         done();
                     }
 

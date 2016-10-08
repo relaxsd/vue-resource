@@ -764,7 +764,7 @@ function serialize(params, obj, scope) {
  * XDomain client (Internet Explorer).
  */
 
-function xdrClient (request) {
+function xdrClient (context, request) {
     return new PromiseObj(function (resolve) {
 
         var xdr = new XDomainRequest(),
@@ -785,7 +785,9 @@ function xdrClient (request) {
 
         request.abort = function () {
             xdr.abort();
-            if (request.abortCb) request.abortCb(request);
+            if (isFunction(request.onAbort)) {
+                request.onAbort.call(context, request);
+            }
         };
 
         xdr.open(request.method, request.getUrl());
@@ -884,7 +886,7 @@ function body (request, next) {
  * JSONP client.
  */
 
-function jsonpClient (request) {
+function jsonpClient (context, request) {
     return new PromiseObj(function (resolve) {
 
         var name = request.jsonp || 'callback',
@@ -909,6 +911,10 @@ function jsonpClient (request) {
 
             delete window[callback];
             document.body.removeChild(script);
+        };
+
+        request.abort = function () {
+            throw "abort() is not available on jsonp requests";
         };
 
         request.params[name] = callback;
@@ -1020,7 +1026,8 @@ function timeout (request, next) {
  * XMLHttp client.
  */
 
-function xhrClient (request) {
+function xhrClient (context, request) {
+
     return new PromiseObj(function (resolve) {
 
         var xhr = new XMLHttpRequest(),
@@ -1040,7 +1047,9 @@ function xhrClient (request) {
 
         request.abort = function () {
             xhr.abort();
-            if (request.abortCb) request.abortCb(request);
+            if (isFunction(request.onAbort)) {
+                request.onAbort.call(context, request);
+            }
         };
 
         if (request.progress) {
@@ -1137,7 +1146,7 @@ function sendRequest(request, resolve) {
 
     var client = request.client || xhrClient;
 
-    resolve(client(request));
+    resolve(client(this, request));
 }
 
 var asyncGenerator = function () {

@@ -85,7 +85,7 @@ describe('this.$resource', function () {
 					resource.get({}, {}, {});
 
 				} catch (e) {
-					expect(e).toBe('Expected up to 2 arguments [params, body], got 3 arguments');
+					expect(e).toBe('Expected up to 2 arguments [body, options], got 3 arguments');
 					done();
 
 				}

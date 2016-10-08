@@ -3,8 +3,9 @@
  */
 
 import Promise from '../../promise';
+import { isFunction } from '../../util';
 
-export default function (request) {
+export default function (context, request) {
     return new Promise((resolve) => {
 
         var xdr = new XDomainRequest(), handler = ({type}) => {
@@ -22,7 +23,9 @@ export default function (request) {
 
         request.abort = () => {
             xdr.abort();
-            if (request.abortCb) request.abortCb(request);
+            if (isFunction(request.onAbort)) {
+                request.onAbort.call(context,request);
+            }
         };
 
         xdr.open(request.method, request.getUrl());

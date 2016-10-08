@@ -19,7 +19,7 @@
   emulateJSON (boolean)
   before (function(Request))
   progress (function(Event))
-  abortCb (function(Request))
+  onAbort (function(Request))
 
   // Methods
   getUrl() (string)
