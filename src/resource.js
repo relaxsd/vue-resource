@@ -28,23 +28,28 @@ export default function Resource(url, params, actions, options) {
 
 function opts(action, args) {
 
-    var options = assign({}, action), params = {}, body;
+    var result = assign({}, action),
+        options = {params:{}},
+        body;
 
     switch (args.length) {
 
         case 2:
 
-            params = args[0];
-            body = args[1];
+            // body, options
+            body = args[0];
+            assign(options, args[1]);
 
             break;
 
         case 1:
 
-            if (/^(POST|PUT|PATCH)$/i.test(options.method)) {
+            if (/^(POST|PUT|PATCH)$/i.test(result.method)) {
+                // For POST: single argument is body
                 body = args[0];
             } else {
-                params = args[0];
+                // For GET: single argument is options
+                assign(options, args[0]);
             }
 
             break;
@@ -55,13 +60,19 @@ function opts(action, args) {
 
         default:
 
-            throw 'Expected up to 2 arguments [params, body], got ' + args.length + ' arguments';
+            throw 'Expected up to 2 arguments [body, options], got ' + args.length + ' arguments';
     }
 
-    options.body = body;
-    options.params = assign({}, options.params, params);
+    result.body = body;
 
-    return options;
+    // Copy the passed {options:params} in result.params and delete them from the options
+    result.params = assign({}, result.params, options.params);
+    delete options.params;
+
+    // Add the rest of the {options} directly to the result
+    assign(result, options);
+
+    return result;
 }
 
 Resource.actions = {
